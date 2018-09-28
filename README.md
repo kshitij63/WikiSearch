@@ -1,0 +1,20 @@
+# WikiSearch
+This project contains following 3 folders-
+
+1. ScreenShots- Contains screenshots of the app.
+2. WikiSearch- Main project
+3.) app-debug.apk- .apk file of the app
+
+
+Libraries used-
+
+1-Retrofit(Networking)
+2-Piccaso(Image loading)
+3-ViewModel and LiveData(for efficiently updating data to UI and Lifecycle independebcy)
+4-Recyclerview and cardview
+
+About-
+
+MainACtivity-Main searching activity that shows the results of the search made by the user.
+DetailWebViewActivity- Screen that open the wikipedia page of particular selected item from the list in the web view.
+Used searchwidget to maintain search suggestions. 
