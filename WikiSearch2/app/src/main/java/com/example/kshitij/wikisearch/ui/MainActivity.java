@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.kshitij.wikisearch.R;
 import com.example.kshitij.wikisearch.pojo.Page;
+import com.example.kshitij.wikisearch.pojo.PageEntity;
 import com.example.kshitij.wikisearch.ui.adapter.WikiAdapter;
 import com.example.kshitij.wikisearch.viewmodels.WikiViewModel;
 
@@ -31,15 +32,16 @@ public class MainActivity extends AppCompatActivity {
     WikiViewModel model;
     WikiAdapter adapter;
     ProgressBar progressBar;
-    List<Page> list;
+    List<PageEntity> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         progressBar = findViewById(R.id.progress);
-        adapter = new WikiAdapter(this, new ArrayList<Page>(), new AdapterClickInterface() {
+        adapter = new WikiAdapter(this, new ArrayList<PageEntity>(), new AdapterClickInterface() {
             @Override
             public void getPosition(int i) {
                 Log.e("title", list.get(i).getTitle());
@@ -54,10 +56,22 @@ public class MainActivity extends AppCompatActivity {
 
         model = ViewModelProviders.of(this).get(WikiViewModel.class);
 
-
-        model.pages.observe(this, new Observer<List<Page>>() {
+        model.getList().observe(this, new Observer<List<PageEntity>>() {
             @Override
-            public void onChanged(@Nullable List<Page> pages) {
+            public void onChanged(@Nullable List<PageEntity> pageEntities) {
+                Log.e("List is:", pageEntities.toString());
+                adapter.setList(pageEntities);
+
+
+                list = pageEntities;
+                progressBar.setVisibility(View.GONE);
+
+            }
+        });
+
+        model.pages.observe(this, new Observer<List<PageEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<PageEntity> pages) {
                 Log.e("List is", pages.toString());
                 adapter.setList(pages);
 
@@ -66,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             }
         });
-
         model.error.observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

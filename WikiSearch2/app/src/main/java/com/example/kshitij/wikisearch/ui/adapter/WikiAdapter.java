@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.kshitij.wikisearch.R;
 import com.example.kshitij.wikisearch.pojo.Page;
+import com.example.kshitij.wikisearch.pojo.PageEntity;
 import com.example.kshitij.wikisearch.ui.AdapterClickInterface;
 import com.squareup.picasso.Picasso;
 
@@ -18,11 +19,11 @@ import java.util.List;
 
 public class WikiAdapter extends RecyclerView.Adapter<WikiAdapter.WikiHolder> {
 
-    private List<Page> list;
+    private List<PageEntity> list;
     private Context context;
     private AdapterClickInterface clickInterface;
 
-    public WikiAdapter(Context context, List<Page> list,
+    public WikiAdapter(Context context, List<PageEntity> list,
                        AdapterClickInterface adapterClickInterface) {
         this.context = context;
         this.list = list;
@@ -39,7 +40,7 @@ public class WikiAdapter extends RecyclerView.Adapter<WikiAdapter.WikiHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull WikiHolder wikiHolder, final int i) {
-        Page page = list.get(i);
+        PageEntity page = list.get(i);
         wikiHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,8 +50,8 @@ public class WikiAdapter extends RecyclerView.Adapter<WikiAdapter.WikiHolder> {
         });
         TextView title = wikiHolder.itemView.findViewById(R.id.wiki_title);
         AppCompatImageView imageView = wikiHolder.itemView.findViewById(R.id.wiki_image);
-        if (page.getThumbnail()!=null) {
-            Picasso.get().load(page.getThumbnail().getSource()).into(imageView);
+        if (!page.getThumbnailUri().equals("")){
+            Picasso.get().load(page.getThumbnailUri()).into(imageView);
         } else Picasso.get().load(R.drawable.na).into(imageView);
         title.setText(page.getTitle());
     }
@@ -67,7 +68,7 @@ public class WikiAdapter extends RecyclerView.Adapter<WikiAdapter.WikiHolder> {
         }
     }
 
-    public void setList(List<Page> list) {
+    public void setList(List<PageEntity> list) {
         this.list = list;
         notifyDataSetChanged();
     }
